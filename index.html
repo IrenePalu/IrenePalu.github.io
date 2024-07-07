@@ -24,7 +24,8 @@
             justify-content: center;
             align-items: center;
         }
-        .invito {
+        .invito, #clickHere {
+            opacity: 0;
             position: fixed;
             top: 50%;
             left: 50%;
@@ -37,8 +38,9 @@
             min-width: 300px;
             color: white;
             padding: 0 20px;
+            transition: all .8s ease;
         }
-        h1 {
+        h1, #clickHere {
             color: #ffbf00;
         }
         .mappa {
@@ -63,6 +65,16 @@
             right: 10px;
             top: 10px;
         }
+        #clickHere {
+            opacity: 1;
+            cursor: pointer;
+            padding: 30px 10px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .invito {
+            z-index: -1;
+        }
     </style>
 
 
@@ -75,6 +87,7 @@
         <source src="./mvaki.ogg" type="audio/ogg">
         Your browser does not support the audio element.
     </audio>
+    <div id="clickHere">FAI CLICK QUI!</div>
     <div class="invito">
         <h1>Festa di Compleanno in Barca!</h1>
         <p>Sei invitato a festeggiare il mio 30º compleanno!</p>
@@ -98,10 +111,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const audio = document.getElementById('myAudio');
         const playButton = document.getElementById('playButton');
+        const clickHere = document.getElementById('clickHere');
+        const invito = document.querySelector('.invito');
 
         // Tenta di avviare la riproduzione automaticamente
         var playPromise = audio.play();
-
         if (playPromise !== undefined) {
             playPromise.then(function() {
                 // Riproduzione avviata con successo
@@ -110,12 +124,20 @@
                 // L'autoplay è stato bloccato
                 console.log('Autoplay was prevented. User interaction is required.');
 
-                // Mostra il pulsante Play
-                document.addEventListener('click', function() {
-                    audio.play();
-                    playButton.style.display = 'none';
-                });
+                var events = ['click', 'keydown'];
+                events.forEach(event => {
+                        document.addEventListener(event, function() {
+                        audio.play();
+                        playButton.style.display = 'none';
+                    });
+                });                
             });
         }
+        clickHere.addEventListener('click', function() {
+            clickHere.style.opacity = '0';
+            clickHere.style.zIndex = '-1';
+            invito.style.opacity = '1';
+            invito.style.zIndex = '10';
+        });
     });
 </script>
