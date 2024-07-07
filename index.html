@@ -57,10 +57,24 @@
                 width: auto;
             }
         }
+        #playButton {
+            position: fixed;
+            visibility: hidden;
+            right: 10px;
+            top: 10px;
+        }
     </style>
+
+
 </head>
 <body>
+    <button id="playButton">Play Music</button>
 	<img id='barchette' src='./barca.png'>
+    <audio id="myAudio" autoplay loop>
+        <source src="./mvaki.mp3" type="audio/mpeg">
+        <source src="./mvaki.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
     <div class="invito">
         <h1>Festa di Compleanno in Barca!</h1>
         <p>Sei invitato a festeggiare il mio 30º compleanno!</p>
@@ -79,3 +93,29 @@
     </div>
 </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('myAudio');
+        const playButton = document.getElementById('playButton');
+
+        // Tenta di avviare la riproduzione automaticamente
+        var playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(function() {
+                // Riproduzione avviata con successo
+                console.log('Playback started');
+            }).catch(function(error) {
+                // L'autoplay è stato bloccato
+                console.log('Autoplay was prevented. User interaction is required.');
+
+                // Mostra il pulsante Play
+                document.addEventListener('click', function() {
+                    audio.play();
+                    playButton.style.display = 'none';
+                });
+            });
+        }
+    });
+</script>
